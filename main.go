@@ -8,7 +8,7 @@ import (
 )
 
 func homeHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "text/html;charset=utf-8")
+
 	fmt.Fprintf(w, "<h1>Hello ,Cheung!<h1>")
 }
 
@@ -19,7 +19,7 @@ func aboutHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func notFoundHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "text/html;charset=utf-8")
+
 	w.WriteHeader(http.StatusNotFound)
 	fmt.Fprint(w, "<h1>请求页面未找到:(</h1></br>"+
 		"<p>如有疑惑,请联系我们.</p>")
@@ -39,6 +39,17 @@ func articlesStoreHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, "创建新文章")
 }
 
+// 使用中间件
+
+func forceHTMLMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// 设置标头
+		w.Header().Set("Content-Type", "text/html; charset=utf-8")
+		// 继续处理请求
+		next.ServeHTTP(w, r)
+	})
+}
+
 func main() {
 	router := mux.NewRouter()
 
@@ -55,11 +66,13 @@ func main() {
 	// 自定义404
 	router.NotFoundHandler = http.HandlerFunc(notFoundHandler)
 
+	// 中间件：强制内容类型为 HTML
+	router.Use(forceHTMLMiddleware)
 	// 通过命名路由 URL 事例
 
 	homeURL, _ := router.Get("home").URL()
 	fmt.Println("homeURL: ", homeURL)
-	articleURL, _ := router.Get("articles.show").URL("id", "23")
+	articleURL, _ := router.Get("articles.show").URL("id", "1")
 	fmt.Println("articles: ", articleURL)
 
 	http.ListenAndServe(":3000", router)
