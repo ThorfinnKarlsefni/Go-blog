@@ -64,8 +64,7 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func aboutHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "text/html;chartext=utf-8")
-	fmt.Fprintf(w, "此博客是用以记录编程笔记，如您有反馈或建议，请联系 "+
+	fmt.Fprint(w, "此博客是用以记录编程笔记，如您有反馈或建议，请联系 "+
 		"<a href=\"mailto:402832626@qq.com\">Nick@qq.com </a>")
 }
 
@@ -79,6 +78,15 @@ func notFoundHandler(w http.ResponseWriter, r *http.Request) {
 type Article struct {
 	Title, Body string
 	ID          int64
+}
+
+func (a Article) Link() string {
+	showURL, err := router.Get("articles.show").URL("id", strconv.FormatInt(a.ID, 10))
+	if err != nil {
+		checkError(err)
+		return ""
+	}
+	return showURL.String()
 }
 
 func articlesShowHandler(w http.ResponseWriter, r *http.Request) {
@@ -225,7 +233,28 @@ func articlesUpdateHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func articlesIndexHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "访问文章列表")
+	fmt.Println(123213)
+	rows, err := db.Query("SELECT * from articles")
+	checkError(err)
+	defer rows.Close()
+
+	var articles []Article
+
+	for rows.Next() {
+		var article Article
+		err := rows.Scan(&article.ID, &article.Title, &article.Body)
+		checkError(err)
+
+		articles = append(articles, article)
+	}
+
+	tmpl, err := template.ParseFiles("resources/views/articles/index.gohtml")
+
+	checkError(err)
+
+	err = tmpl.Execute(w, articles)
+
+	checkError(err)
 }
 
 func validateArticleFormData(title string, body string) map[string]string {
