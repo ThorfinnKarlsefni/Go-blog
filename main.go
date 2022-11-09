@@ -92,7 +92,7 @@ func (a Article) Link() string {
 
 func articlesShowHandler(w http.ResponseWriter, r *http.Request) {
 	// 1. 获取 URL 参数
-	id := getRouteVaribale("id", r)
+	id := route.GetRouteVariable("id", r)
 
 	// 2. 请求对应的文章数据
 	article, err := getArticleByID(id)
@@ -117,11 +117,6 @@ func articlesShowHandler(w http.ResponseWriter, r *http.Request) {
 		checkError(err)
 	}
 
-}
-
-func getRouteVaribale(parameterName string, r *http.Request) string {
-	vars := mux.Vars(r)
-	return vars[parameterName]
 }
 
 func getArticleByID(id string) (Article, error) {
@@ -172,7 +167,7 @@ func articlesEditHandler(w http.ResponseWriter, r *http.Request) {
 
 func articlesUpdateHandler(w http.ResponseWriter, r *http.Request) {
 
-	id := getRouteVaribale("id", r)
+	id := route.GetRouteVariable("id", r)
 
 	_, err := getArticleByID(id)
 
@@ -415,7 +410,7 @@ func createTables() {
 }
 
 func articlesDeleteHandler(w http.ResponseWriter, r *http.Request) {
-	id := getRouteVaribale("id", r)
+	id := route.GetRouteVariable("id", r)
 
 	article, err := getArticleByID(id)
 
