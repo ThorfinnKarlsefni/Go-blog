@@ -1,0 +1,12 @@
+
+root = true
+
+[*.gohtml]
+
+charset = uft-8
+
+trim_trailing_whitesapce = true
+
+indent_style = space
+
+indent_size = 2
