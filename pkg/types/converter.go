@@ -19,6 +19,6 @@ func StringToUint64(str string) uint64 {
 	return i
 }
 
-func Unit64ToString(num uint64) string {
+func Uint64ToString(num uint64) string {
 	return strconv.FormatUint(num, 10)
 }

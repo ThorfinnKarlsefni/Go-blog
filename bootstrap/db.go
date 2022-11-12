@@ -6,7 +6,7 @@ import (
 )
 
 func SetupDB() {
-	db := model.ContentDB()
+	db := model.ConnectDB()
 
 	sqlDB, _ := db.DB()
 

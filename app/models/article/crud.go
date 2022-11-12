@@ -29,7 +29,7 @@ func GetAll() ([]Article, error) {
 }
 
 func (article *Article) Create() (err error) {
-	if err := model.DB.Create(&article).Error; err != nil {
+	if err = model.DB.Create(&article).Error; err != nil {
 		logger.LogError(err)
 		return err
 	}

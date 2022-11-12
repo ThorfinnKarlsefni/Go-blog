@@ -33,9 +33,9 @@ func (*ArticlesController) Show(w http.ResponseWriter, r *http.Request) {
 		}
 	} else {
 		tmpl, err := template.New("show.gohtml").Funcs(template.FuncMap{
-			"RouteName2URL": route.Name2URL,
-			"Int64ToString": types.Unit64ToString,
-		}).ParseFiles("resources/view/articles/show.gohtml")
+			"RouteName2URL":  route.Name2URL,
+			"Uint64ToString": types.Uint64ToString,
+		}).ParseFiles("resources/views/articles/show.gohtml")
 
 		logger.LogError(err)
 		err = tmpl.Execute(w, article)
@@ -100,7 +100,7 @@ func validateArticleFormData(title string, body string) map[string]string {
 
 	if body == "" {
 		errors["body"] = "内容不能为空"
-	} else if utf8.RuneCountInString(body) > 10 {
+	} else if utf8.RuneCountInString(body) < 10 {
 		errors["body"] = "内容长度需大于或等于 10 个字节"
 	}
 
@@ -108,6 +108,7 @@ func validateArticleFormData(title string, body string) map[string]string {
 }
 
 func (*ArticlesController) Store(w http.ResponseWriter, r *http.Request) {
+
 	title := r.PostFormValue("title")
 	body := r.PostFormValue("body")
 
@@ -146,11 +147,13 @@ func (*ArticlesController) Store(w http.ResponseWriter, r *http.Request) {
 }
 
 func (*ArticlesController) Edit(w http.ResponseWriter, r *http.Request) {
+
 	id := route.GetRouteVariable("id", r)
 
 	article, err := article.Get(id)
 
 	if err != nil {
+
 		if err == gorm.ErrRecordNotFound {
 			w.WriteHeader(http.StatusNotFound)
 			fmt.Fprint(w, "404 文章未找到")
@@ -160,7 +163,7 @@ func (*ArticlesController) Edit(w http.ResponseWriter, r *http.Request) {
 			fmt.Fprint(w, "500 服务器内部错误")
 		}
 	} else {
-		updateURL := route.Name2URL("articles.update")
+		updateURL := route.Name2URL("articles.update", "id", id)
 		data := ArticlesFormData{
 			Title:  article.Title,
 			Body:   article.Body,
@@ -168,7 +171,7 @@ func (*ArticlesController) Edit(w http.ResponseWriter, r *http.Request) {
 			Errors: nil,
 		}
 
-		tmpl, err := template.ParseFiles("resources/view/articles/edit.gohtml")
+		tmpl, err := template.ParseFiles("resources/views/articles/edit.gohtml")
 		logger.LogError(err)
 		err = tmpl.Execute(w, data)
 		logger.LogError(err)

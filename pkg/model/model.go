@@ -11,7 +11,7 @@ import (
 
 var DB *gorm.DB
 
-func ContentDB() *gorm.DB {
+func ConnectDB() *gorm.DB {
 	var err error
 
 	config := mysql.New(mysql.Config{
