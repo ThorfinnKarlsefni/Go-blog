@@ -2,6 +2,7 @@ package user
 
 import (
 	"goblog/app/models"
+	"goblog/pkg/password"
 )
 
 type User struct {
@@ -15,6 +16,6 @@ type User struct {
 	PasswordConfirm string `gorm:"-" valid:"passowrd_confirm"`
 }
 
-func (user *User) ComparePassword(password string) bool {
-	return user.Password == password
+func (user *User) ComparePassword(_password string) bool {
+	return password.CheckHash(_password, user.Password)
 }
