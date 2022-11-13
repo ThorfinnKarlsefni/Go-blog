@@ -32,8 +32,13 @@ func StartSession(w http.ResponseWriter, r *http.Request) {
 }
 
 func Put(key string, value interface{}) {
+	// fmt.Println(value)
 	Session.Values[key] = value
 	Save()
+}
+
+func Get(key string) interface{} {
+	return Session.Values[key]
 }
 
 func Forget(key string) {
