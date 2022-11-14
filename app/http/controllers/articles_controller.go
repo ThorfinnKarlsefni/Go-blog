@@ -27,7 +27,7 @@ func (*ArticlesController) Show(w http.ResponseWriter, r *http.Request) {
 		} else {
 			logger.LogError(err)
 			w.WriteHeader(http.StatusInternalServerError)
-			fmt.Fprint(w, "500 内部服务器错误")
+			fmt.Fprint(w, "500 服务器内部错误")
 		}
 	} else {
 

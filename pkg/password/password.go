@@ -7,6 +7,7 @@ import (
 )
 
 func Hash(password string) string {
+	// GenerateFromPassword 的第二个参数是 cost 值。建议大于 12，数值越大耗费时间越长
 	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
 	logger.LogError(err)
 
@@ -16,7 +17,6 @@ func Hash(password string) string {
 func CheckHash(password, hash string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
 	logger.LogError(err)
-
 	return err == nil
 }
 

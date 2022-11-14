@@ -1,10 +1,14 @@
 {{define "title"}}
 注册
 {{end}}
+
 {{define "main"}}
 <div class="blog-post bg-white p-5 rounded shadow mb-4">
+
   <h3 class="mb-5 text-center">用户注册</h3>
+
   <form action="{{ RouteName2URL "auth.doregister" }}" method="post">
+
     <div class="form-group row mb-3">
       <label for="name" class="col-md-4 col-form-label text-md-right">姓名</label>
       <div class="col-md-6">
@@ -52,10 +56,15 @@
         </button>
       </div>
     </div>
+
   </form>
+
 </div>
+
+
 <div class="mb-3">
   <a href="/" class="text-sm text-muted"><small>返回首页</small></a>
   <a href="/" class="text-sm text-muted float-right"><small>登录</small></a>
 </div>
+
 {{end}}

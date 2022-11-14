@@ -6,14 +6,7 @@ import (
 	"goblog/config"
 	c "goblog/pkg/config"
 	"net/http"
-	"net/url"
 )
-
-type ArticlesFormData struct {
-	Title, Body string
-	URL         *url.URL
-	Errors      map[string]string
-}
 
 func init() {
 	config.Initialize()
