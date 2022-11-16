@@ -23,7 +23,7 @@ func (bc BaseController) ResponseForSQLError(w http.ResponseWriter, err error) {
 	}
 }
 
-func (bc BaseController) ResponesForUnauthorize(w http.ResponseWriter, r *http.Request) {
+func (bc BaseController) ResponseForUnauthorized(w http.ResponseWriter, r *http.Request) {
 	flash.Warning("未授权操作")
 	http.Redirect(w, r, "/", http.StatusFound)
 }
