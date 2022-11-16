@@ -35,6 +35,7 @@ func RegisterWebRoutes(r *mux.Router) {
 	cc := new(controllers.CategoriseController)
 	r.HandleFunc("/categorise/create", middlewares.Auth(cc.Create)).Methods("GET").Name("categories.create")
 	r.HandleFunc("/categorise", middlewares.Auth(cc.Store)).Methods("POST").Name("categories.store")
+	r.HandleFunc("/categorise/{id:[0-9]+}/delete", middlewares.Auth(ac.Delete)).Methods("GET").Name("categorise.show")
 
 	// 用户认证
 	auc := new(controllers.AuthController)
